@@ -491,7 +491,7 @@ footer {
       </div>
       
       <div class="detail-image-container anim" style="margin: 25px 0; text-align: center;">
-        <img src="award_image_path.jpg" alt="KSC 2023 장려상 상장" style="max-width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+        <img src="award_image_path.png" alt="KSC 2023 장려상 상장" style="max-width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
       </div>
 
       <div class="detail-divider"></div>
@@ -499,7 +499,7 @@ footer {
       <div class="anim">
         <div class="detail-section-label">Overview</div>
         <div class="detail-body">
-          <p>차세대 스토리지인 ZNS SSD를 연구하기 위해 학계와 산업계는 NVMeVirt와 같은 커널 기반 에뮬레이터를 널리 사용합니다. 하지만 글로벌 스토리지 연구(IEEE 2023)에서 지적되었듯, 기존 NVMeVirt는 실제 하드웨어의 특성을 담아내지 못하는 치명적인 결함이 있었습니다. 구체적으로, 핵심 연산인 append와 write의 Latency를 동일하게 처리하는 로직 오류가 있었고, 플래시 메모리의 물리적 특성인 블록 Erase 비용이 reset 연산에 누락되어 시뮬레이션의 신뢰도가 떨어졌습니다. 또한, 전역 변수 중심의 단일 디바이스 종속적인 아키텍처로 인해 대규모 시스템 환경을 모사할 수 없었습니다. 저는 시스템 엔지니어로서 이러한 글로벌 오픈소스의 구조적/논리적 문제를 직접 코드로 해결하는 프로젝트를 주도했습니다.</p>
+          <p>차세대 스토리지인 ZNS SSD를 연구하기 위해 학계와 산업계는 NVMeVirt와 같은 커널 기반 에뮬레이터를 널리 사용합니다. 하지만 글로벌 스토리지 연구(Performance Characterization of NVMe Flash Devices with Zoned Namespaces)에서 지적되었듯, 기존 NVMeVirt는 실제 하드웨어의 특성을 담아내지 못하는 치명적인 결함이 있었습니다. 구체적으로, 핵심 연산인 append와 write의 Latency를 동일하게 처리하는 로직 오류가 있었고, 플래시 메모리의 물리적 특성인 블록 Erase 비용이 reset 연산에 누락되어 시뮬레이션의 신뢰도가 떨어졌습니다. 또한, 전역 변수 중심의 단일 디바이스 종속적인 아키텍처로 인해 대규모 시스템 환경을 모사할 수 없었습니다. 저는 시스템 엔지니어로서 이러한 글로벌 오픈소스의 구조적/논리적 문제를 직접 코드로 해결하는 프로젝트를 주도했습니다.</p>
         </div>
       </div>
       
@@ -509,7 +509,7 @@ footer {
         <div class="detail-section-label">Technical Contributions</div>
         <div class="detail-body">
           <p style="margin-bottom: 20px;"><strong>2-1. 물리적 하드웨어 특성을 반영한 ZNS 모델 재설계:</strong> 기존 시스템에서 하나로 묶여 있던 append와 write의 처리 파이프라인을 분석하고, append 시 발생하는 추가적인 오버헤드를 로직에 반영하여 지연시간 모델을 분리했습니다. 또한, Samsung 980 PRO의 실제 Erase Latency 스펙을 분석하여 기존에 누락되어 있던 reset 연산 비용을 신규 구현했습니다. 연산의 실제 실행 시간까지 실측하여 합산하는 정교한 모델링을 통해 기존에 있던 NVMeVirt의 문제를 고쳤습니다.</p>
-          <p><strong>2-2. 커널 리소스 격리 및 sysfs 기반의 확장 가능한 아키텍처 구축:</strong> 대규모 병렬 테스트가 불가능했던 기존의 단일 인스턴스 제약을 없애기 위해 C 언어 기반의 커널 모듈을 대대적으로 리팩토링했습니다. 전역 변수(Global Variable)에 의존하던 리소스 할당 방식을 로컬 변수 기반으로 전환하여 메모리를 격리하고, 컴파일 타임에 결정되던 설정을 런타임 동적 로딩 구조로 변경했습니다. 동시에 기존 procfs를 sysfs 인터페이스로 개편하여 사용자가 /sys 디렉토리에서 다수의 가상 디바이스를 독립적으로 생성하고 제어할 수 있는 체계적인 관리 환경을 구현했습니다.</p>
+          <p><strong>2-2. 커널 리소스 격리 및 sysfs 기반의 확장 가능한 아키텍처 구축:</strong> 대규모 병렬 테스트가 불가능했던 기존의 단일 인스턴스 제약을 없애기 위해 C 언어 기반의 커널 모듈을 대대적으로 리팩토링했습니다. Global Variable에 의존하던 리소스 할당 방식을 로컬 변수 기반으로 전환하여 메모리를 격리하고, 컴파일 타임에 결정되던 설정을 런타임 동적 로딩 구조로 변경했습니다. 동시에 기존 procfs를 sysfs 인터페이스로 개편하여 사용자가 /sys 디렉토리에서 다수의 가상 디바이스를 독립적으로 생성하고 제어할 수 있는 체계적인 관리 환경을 구현했습니다.</p>
         </div>
       </div>
 
