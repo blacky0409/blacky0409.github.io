@@ -147,6 +147,41 @@ nav {
 .stat-num { font-family:var(--mono); font-size:1.7rem; color:var(--text); font-weight:300; }
 .stat-label { font-size:10px; color:var(--text3); letter-spacing:0.12em; text-transform:uppercase; }
 
+/* ABOUT SECTION */
+#about { padding: 5rem 0; border-top: 1px solid var(--border); }
+.about-grid { display: grid; grid-template-columns: 1fr 2.2fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+.profile-pic {
+  width: 100%; aspect-ratio: 1; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  overflow: hidden; margin-bottom: 2rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text3); font-family: var(--mono); font-size: 13px; font-style: italic;
+}
+.profile-pic img { width: 100%; height: 100%; object-fit: cover; }
+.interest-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.95rem; color: var(--text2); }
+.interest-list li { display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+.cv-section { margin-bottom: 2.5rem; }
+.cv-heading {
+  font-family: var(--mono); font-size: 12px; color: var(--accent2);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.cv-item { position: relative; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+.cv-item::before {
+  content: ''; position: absolute; left: 0; top: 8px;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent2);
+}
+.cv-item::after {
+  content: ''; position: absolute; left: 2.5px; top: 20px; bottom: -1.5rem;
+  width: 1px; background: var(--border);
+}
+.cv-item:last-child::after { display: none; }
+.cv-item:last-child { margin-bottom: 0; }
+.cv-title { font-size: 1.05rem; font-weight: 500; color: var(--text); }
+.cv-meta { font-size: 0.9rem; color: var(--text2); margin-top: 0.2rem; }
+.cv-meta span.date { font-family: var(--mono); font-size: 11px; }
+.cv-desc { font-size: 0.85rem; color: var(--text2); margin-top: 0.5rem; line-height: 1.6; }
+
 /* RESEARCH LIST */
 #research-list { padding:7rem 0 5rem; border-top:1px solid var(--border); }
 .research-head { margin-bottom:2.5rem; }
@@ -215,6 +250,10 @@ footer {
   font-family:var(--mono); font-size:11px; color:var(--text3); letter-spacing:0.08em;
 }
 
+@media(max-width:768px){
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
 @media(max-width:680px){
   nav { padding:1rem 1.5rem; }
   .nav-links { gap:1.2rem; }
@@ -230,6 +269,7 @@ footer {
 <nav>
   <span class="nav-logo" onclick="goHome()">main</span>
   <ul class="nav-links" id="nav-main-links">
+    <li><a onclick="scrollToId('about')">About</a></li>
     <li><a onclick="scrollToId('research-list')">Research</a></li>
     <li><a onclick="scrollToId('apps-list')">Apps</a></li>
   </ul>
@@ -246,7 +286,6 @@ footer {
   </div>
 </nav>
 
-<!-- ══════════ MAIN PAGE ══════════ -->
 <div id="page-main" class="page active">
 
   <div id="hero">
@@ -277,6 +316,63 @@ footer {
       </div>
     </div>
   </div>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="fade-in">
+        <div class="section-tag">Profile</div>
+        <h2 class="section-title">About Me</h2>
+      </div>
+
+      <div class="about-grid fade-in">
+        <div class="about-sidebar">
+          <div class="profile-pic">
+            <img src="profile.jpg" alt="Profile Picture" onerror="this.style.display='none'; this.parentNode.innerHTML='프로필 사진 (profile.jpg)'">
+          </div>
+          <h3 style="font-family:var(--serif); font-size:1.35rem; margin-bottom:1rem; color:var(--text);">Research Interests</h3>
+          <ul class="interest-list">
+            <li><span style="color:var(--accent2);">▹</span> Computer Architecture</li>
+            <li><span style="color:var(--accent2);">▹</span> SSD & Memory</li>
+            <li><span style="color:var(--accent2);">▹</span> Operating Systems</li>
+            <li><span style="color:var(--accent2);">▹</span> Systems for Machine Learning</li>
+          </ul>
+        </div>
+
+        <div class="about-content">
+          <div class="cv-section">
+            <h3 class="cv-heading">🎓 Education</h3>
+            <div class="cv-item">
+              <div class="cv-title">Master of Science in Computer Engineering (SSLAB)</div>
+              <div class="cv-meta">Ajou University, South Korea <span style="margin:0 8px; color:var(--border2);">|</span> <span class="date">2025 — Present</span></div>
+            </div>
+            <div class="cv-item">
+              <div class="cv-title">Bachelor of Science in Computer Engineering</div>
+              <div class="cv-meta">Ajou University, South Korea <span style="margin:0 8px; color:var(--border2);">|</span> <span class="date">2019 — 2024</span></div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3 class="cv-heading">💼 Work Experience</h3>
+            <div class="cv-item">
+              <div class="cv-title">Research Intern</div>
+              <div class="cv-meta">System Software Lab in Ajou University, South Korea <span style="margin:0 8px; color:var(--border2);">|</span> <span class="date">2023 — 2024</span></div>
+            </div>
+          </div>
+
+          <div class="cv-section" style="margin-bottom:0;">
+            <h3 class="cv-heading">🏆 Awards</h3>
+            <div class="cv-item">
+              <div class="cv-title">Award for Undergraduate Research (KSC'23)</div>
+              <div class="cv-meta">Korea Software Congress 2023</div>
+              <div class="cv-desc">
+                <strong style="color:var(--text);">NVMeVirt 다중 인스턴스 지원 및 성능 모델 개선 연구</strong> — 장려상 수상
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="research-list">
     <div class="wrap">
@@ -372,7 +468,6 @@ footer {
   </footer>
 </div>
 
-<!-- ══════════ DETAIL: SYSTOR ══════════ -->
 <div id="page-systor" class="page">
   <div class="detail-page">
     <div class="detail-inner">
@@ -444,7 +539,6 @@ footer {
   </div>
 </div>
 
-<!-- ══════════ DETAIL: KCC 2024 ══════════ -->
 <div id="page-kcc" class="page">
   <div class="detail-page">
     <div class="detail-inner">
@@ -477,7 +571,6 @@ footer {
   </div>
 </div>
 
-<!-- ══════════ DETAIL: KSC 2023 ══════════ -->
 <div id="page-ksc" class="page">
   <div class="detail-page">
     <div class="detail-inner">
@@ -537,7 +630,6 @@ footer {
   </div>
 </div>
 
-<!-- ══════════ DETAIL: APP 1 ══════════ -->
 <div id="page-app1" class="page">
   <div class="detail-page">
     <div class="detail-inner">
@@ -569,7 +661,6 @@ footer {
   </div>
 </div>
 
-<!-- ══════════ DETAIL: APP 2 ══════════ -->
 <div id="page-app2" class="page">
   <div class="detail-page">
     <div class="detail-inner">
