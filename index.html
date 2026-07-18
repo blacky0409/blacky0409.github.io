@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LeeSeungYun — SSD & Storage Systems Researcher</title>
+<title>LeeSeungYun — SSD &amp; Storage Systems Researcher</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
@@ -250,6 +250,17 @@ footer {
   font-family:var(--mono); font-size:11px; color:var(--text3); letter-spacing:0.08em;
 }
 
+.contact-inline {
+  display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;
+  font-family:var(--mono); font-size:12px; color:var(--text2);
+  margin-top:1.6rem;
+}
+.contact-inline a {
+  color:var(--accent2); text-decoration:none; border-bottom:1px solid transparent;
+  transition:border-color 0.2s;
+}
+.contact-inline a:hover { border-color:var(--accent2); }
+
 @media(max-width:768px){
   .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
 }
@@ -308,7 +319,19 @@ footer {
         C/C++ 기반의 로우레벨 디버깅과 스토리지 아키텍처 분석을 통해, 
         하드웨어의 제약을 효율적인 소프트웨어 로직으로 돌파하는 개발자입니다.
       </p>
-      <div class="hero-cta">
+
+      <!-- 연락처: 상단에도 노출 -->
+      <div class="contact-inline">
+        <span>Contact</span>
+        <span>·</span>
+        <a href="mailto:leeyun8048@gmail.com">leeyun8048@gmail.com</a>
+        <span>·</span>
+        <a href="https://www.linkedin.com/in/seungyun-lee-a86375406" target="_blank">LinkedIn</a>
+        <span>·</span>
+        <a href="https://github.com/blacky0409" target="_blank">GitHub</a>
+      </div>
+
+      <div class="hero-cta" style="margin-top:2rem;">
         <span class="btn btn-primary" onclick="scrollToId('research-list')">View Research</span>
         <span class="btn btn-ghost" onclick="scrollToId('apps-list')">Side Projects</span>
       </div>
@@ -415,14 +438,14 @@ footer {
       <div class="paper-card fade-in" onclick="showPage('page-systor')">
         <div class="paper-card-body">
           <div class="paper-card-badges">
-            <span class="paper-badge badge-systor">SYSTOR 2025 — Submission</span>
+            <span class="paper-badge badge-systor">SYSTOR — Major Revision</span>
           </div>
           <div class="paper-card-title">
-            A Picture Is Worth 1000 Approximations: Emulating and Directly Analyzing Physical Fragmentation on Aged SSDs
+            Unboxing the Black Box: Quantitative Analysis of Physical Fragmentation in Modern SSDs
           </div>
           <div class="paper-card-summary">
-            SSD aging 상태를 즉시 재현하는 snapshot 기반 방법론과, 상용 SSD 블랙박스 속 physical fragmentation을
-            최초로 정량적으로 제어·분석한 SPF 모델을 제안합니다.
+            SSD aging 상태를 수십 초 만에 재현하는 snapshot 기반 에뮬레이션 프레임워크와, 상용 SSD의
+            블랙박스 FTL 속 physical fragmentation을 0~100% 정량 제어할 수 있는 SPF 모델을 제안합니다.
           </div>
         </div>
         <div class="paper-card-arrow">→</div>
@@ -503,24 +526,30 @@ footer {
   <div class="detail-page">
     <div class="detail-inner">
       <div class="detail-badges anim">
-        <span class="paper-badge badge-systor">SYSTOR 2025 — Submission</span>
+        <span class="paper-badge badge-systor">SYSTOR — Major Revision</span>
       </div>
       <h1 class="detail-title anim">
-        A Picture Is Worth 1000 Approximations:<br>
-        Emulating and Directly Analyzing Physical Fragmentation on Aged SSDs
+        Unboxing the Black Box:<br>
+        Quantitative Analysis of Physical Fragmentation in Modern SSDs
       </h1>
       <div class="detail-meta anim">
         SSLAB &nbsp;·&nbsp; NVMeVirt &nbsp;·&nbsp; SSD Aging &nbsp;·&nbsp; Physical Fragmentation &nbsp;·&nbsp; FTL
       </div>
       <div class="detail-divider"></div>
       <div class="anim">
-        <div class="detail-section-label">Overview - I should modify</div>
+        <div class="detail-section-label">Overview</div>
         <div class="detail-body">
-          <p>SSD aging은 현실적인 스토리지 성능 평가에 필수적이나, aged device 상태를 재현하려면
-          며칠씩 연속 workload를 실행해야 합니다. 본 논문에서는 aged SSD의 완전한 내부 상태를
-          캡처하고 새로운 에뮬레이터 인스턴스에 즉시 복원하는 <strong>snapshot 기반 방법론</strong>을 제안합니다.</p>
-          <p>또한 상용 SSD의 블랙박스 특성으로 인해 접근 불가했던 <strong>physical fragmentation</strong>을
-          직접 분석할 수 있는 3-파라미터 SPF 모델을 설계했습니다.</p>
+          <p>SSD를 오래 쓸수록 성능이 눈에 띄게 느려지는 현상의 상당 부분은, host 입장에서는 전혀 보이지 않는
+          <strong>physical fragmentation</strong> — 논리 주소(LBA)와 실제 NAND 물리 위치 사이의 어긋남 — 때문입니다.
+          문제는 이 physical fragmentation이 상용 SSD의 FTL 내부에 완전히 블랙박스로 가려져 있어 직접 관찰·제어할
+          방법이 없었고, aged 상태를 재현하려면 2TiB급 드라이브 기준 <strong>13일</strong>씩 실사용 워크로드를
+          반복 실행해야 했다는 점입니다.</p>
+          <p>본 연구는 NVMeVirt 기반의 고정밀 SSD 에뮬레이터를 확장하여, 에뮬레이터의 내부 상태(FTL 매핑 테이블,
+          블록 관리 구조, valid 데이터)를 <strong>스냅샷</strong>으로 캡처·즉시 복원함으로써 aging 과정을 수십 초로
+          단축하고, P<sub>degree</sub>·L<sub>burst</sub>·N<sub>streams</sub> 세 파라미터로 physical fragmentation의
+          정도를 0~100%까지 정량 제어할 수 있는 <strong>Stochastic Physical Fragmentation(SPF) 모델</strong>을
+          제안합니다. 이를 통해 그동안 블랙박스에 가려져 있던 physical fragmentation의 성능 영향을 논리적
+          fragmentation과 분리하여 독립적으로 분석했습니다.</p>
         </div>
       </div>
       <div class="detail-divider"></div>
@@ -528,9 +557,9 @@ footer {
         <div class="detail-section-label">Key Contributions</div>
         <div class="contrib-grid">
           <div class="contrib-item">
-            <div class="contrib-label">01 / Snapshot</div>
-            <div class="contrib-title">SSD 상태 캡처 & 즉시 복원</div>
-            <div class="contrib-text">13일이 걸리던 aging 과정을 Valid-Only dump로 수십 초 내 재현.</div>
+            <div class="contrib-label">01 / Emulation</div>
+            <div class="contrib-title">FTL 내부 직접 제어 & 계측</div>
+            <div class="contrib-text">매핑 테이블·블록 관리 구조까지 접근해 die collision latency/count 등 physical fragmentation 내부 메트릭을 최초로 정량 계측.</div>
           </div>
           <div class="contrib-item">
             <div class="contrib-label">02 / SPF Model</div>
@@ -538,9 +567,9 @@ footer {
             <div class="contrib-text">P<sub>degree</sub>, L<sub>burst</sub>, N<sub>streams</sub> 세 파라미터로 0~100% 재현 가능한 fragmentation 모델.</div>
           </div>
           <div class="contrib-item">
-            <div class="contrib-label">03 / Analysis</div>
-            <div class="contrib-title">논리 & 물리 파편화 복합 분석</div>
-            <div class="contrib-text">2×2 실험 매트릭스로 독립적·복합적 성능 영향 최초 정량화.</div>
+            <div class="contrib-label">03 / Snapshot</div>
+            <div class="contrib-title">즉시 Aging & 완전한 재현성</div>
+            <div class="contrib-text">13일 걸리던 실제 디바이스 aging을 Valid-Only 스냅샷 복원으로 대체하면서도 결정론적 재현성 보장.</div>
           </div>
         </div>
       </div>
@@ -548,19 +577,52 @@ footer {
       <div class="anim">
         <div class="detail-section-label">Key Results</div>
         <div class="result-chips">
-          <span class="chip"><strong>21.2%</strong> seq. throughput drop</span>
-          <span class="chip"><strong>40.1%</strong> p99 latency increase</span>
+          <span class="chip">13 days <strong>→</strong> seconds precondition</span>
+          <span class="chip"><strong>2.2×</strong> p99.99 tail latency increase</span>
           <span class="chip">QD=32 at peak vulnerability</span>
-          <span class="chip">13 days → seconds</span>
         </div>
       </div>
       <div class="detail-divider"></div>
       <div class="anim">
         <div class="detail-section-label">Details</div>
-        <div class="detail-placeholder">
-          ✏️ 이 영역은 직접 내용을 채워주세요.<br>
-          실험 설정, 추가 분석 내용, 의의, 향후 연구 방향 등을 자유롭게 작성하시면 됩니다.<br>
-          HTML에서 이 &lt;div class="detail-placeholder"&gt; 블록을 교체하세요.
+        <div class="detail-body">
+          <h3 style="font-size:1.1rem; margin-bottom:0.8rem; color:var(--text); font-weight:500;">1. Snapshot 기반 즉시 Aging</h3>
+          <p>스냅샷은 FTL 매핑 테이블, 블록 관리 구조(free/pool/victim block list), 디바이스 설정, 그리고
+          스토리지 전체 콘텐츠 네 가지를 캡처합니다. 초기 프로토타입은 저장·복원 대부분의 시간이 스토리지
+          콘텐츠 덤프에 소요된다는 걸 발견했고, 이를 <strong>valid 데이터만 저장하는 방식</strong>으로 최적화해
+          파일 크기와 처리 시간을 크게 줄였습니다 (128GiB 에뮬레이터 기준, utilization 20%에서 valid-only는
+          81초/28GiB, full dump는 173초/130GiB). 이 방식으로 2TiB 드라이브 기준 <strong>13일</strong> 걸리던
+          preconditioning을 수십 초 스냅샷 복원으로 대체하면서도, 실제 aged SSD와 유사한 열화 추세(SELECT QPS
+          기준 real SSD 97.9% 감소, emulator 99.1% 감소)를 재현함을 검증했습니다.</p>
+
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">2. Stochastic Physical Fragmentation (SPF) 모델</h3>
+          <p>무작위 데이터 재배치는 fragmentation 정도를 정밀하게 제어하기 어렵다는 한계가 있어, 세 가지
+          직관적인 파라미터로 모델을 설계했습니다: <strong>P<sub>degree</sub></strong>(die 충돌이 발생할 확률),
+          <strong>L<sub>burst</sub></strong>(충돌 1회당 같은 die에 몰리는 연속 페이지 수), <strong>N<sub>streams</sub></strong>
+          (동시 I/O 스트림 간 인터리빙 정도). 민감도 분석 결과 P<sub>degree</sub>가 성능 열화를 좌우하는 가장
+          지배적인 변수였고, L<sub>burst</sub>는 구조적 심각도를, N<sub>streams</sub>는 상대적으로 완만한 2차
+          효과를 담당하는 것으로 나타났습니다.</p>
+
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">3. 논리 vs 물리 파편화 분리 실험</h3>
+          <p>실제 워크로드에서는 논리적 fragmentation과 physical fragmentation이 항상 동시에 발생하기 때문에,
+          이 둘의 영향을 분리하기 위해 2×2 실험 매트릭스(logical only / physical only / both / baseline)를
+          설계했습니다. 결과적으로 physical fragmentation만 주입했을 때(1,690 MB/s)가 logical fragmentation만
+          주입했을 때(2,803 MB/s)보다 훨씬 큰 성능 저하를 보였고, 두 요인이 함께 존재할 때(1,662 MB/s) 가장
+          낮은 성능을 기록해 두 차원이 독립적으로 작동하며 복합적으로 성능을 갉아먹는다는 것을 정량적으로
+          확인했습니다.</p>
+
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">4. Queue Depth에 대한 반직관적 발견</h3>
+          <p>fragmentation의 영향이 queue depth에 비례해 커질 것이라는 일반적인 예상과 달리, 실제로는
+          <strong>QD=32(die 포화 시점)</strong>에서 성능 열화가 가장 컸고, 오히려 QD=128처럼 과도하게 큐가
+          쌓이는 구간에서는 깊은 큐 자체가 collision을 흡수하는 버퍼 역할을 해 열화가 일부 완화되는 비선형적
+          패턴을 확인했습니다.</p>
+
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">5. 실험 방법론 상의 발견: Host I/O 버퍼 파편화</h3>
+          <p>초기 실험에서 동일 조건에서도 성능 편차가 매우 크게 나타나는 문제를 발견했는데, 원인을 추적한
+          결과 fio가 기본 <code>malloc()</code>으로 할당한 I/O 버퍼가 물리적으로 비연속적이어서(PRP 엔트리의
+          99.99%가 non-contiguous) NVMe 커맨드가 마치 심각하게 fragmented된 것처럼 처리되고 있었습니다.
+          <code>--iomem=mmaphuge</code> 옵션으로 hugepage 기반의 연속 버퍼를 사용하도록 바꿔 이 노이즈를
+          제거함으로써(non-contiguous 비율 0.003%로 감소) 이후의 모든 측정을 신뢰성 있게 재현할 수 있었습니다.</p>
         </div>
       </div>
       <div style="margin-top:2rem;" class="anim">
@@ -637,7 +699,7 @@ footer {
           
           <div class="detail-image-container">
             <img src="images/performance_comparison.png" alt="[그림 4] 기존 LSM Tree와 개선된 LSM Tree 성능 비교" class="portfolio-image">
-            <p class="image-caption">[그림 4] 기존 LSM Tree와 개선된 LSM Tree 성능 비교(데이터가 사라져 옛날 사진 첨부하였습니다..)</p>
+            <p class="image-caption">[그림 4] 기존 LSM Tree와 개선된 LSM Tree 성능 비교</p>
           </div>
 
           <p>실험 결과, 모든 데이터가 주 메모리에 있는 'Best Case'와 서브 메모리에 있는 'Worst Case' 사이에서 <strong>약 20%의 성능 편차를 보이던 기존 구조</strong>와 달리, 새롭게 구현한 아키텍처는 메모리 계층에 관계없이 <strong>편차 없는 안정적이고 균일한 처리 속도</strong>를 입증했습니다.</p>
