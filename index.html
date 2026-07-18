@@ -337,7 +337,7 @@ footer {
       </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <span class="stat-num">3</span>
+          <span class="stat-num">4</span>
           <span class="stat-label">Publications</span>
         </div>
         <div class="stat-item">
@@ -451,6 +451,23 @@ footer {
         <div class="paper-card-arrow">→</div>
       </div>
 
+      <div class="paper-card fade-in" onclick="showPage('page-kcc2026')">
+        <div class="paper-card-body">
+          <div class="paper-card-badges">
+            <span class="paper-badge badge-kcc">KCC 2026</span>
+            <span class="paper-badge badge-award">🎤 Oral Presentation</span>
+          </div>
+          <div class="paper-card-title">
+            SSD 물리적 단편화의 정량적 제어 기법
+          </div>
+          <div class="paper-card-summary">
+            SYSTOR 프레임워크의 핵심 구성요소인 SPF(Stochastic Physical Fragmentation) 모델을 독립적으로
+            설계·검증한 연구로, oral session에서 발표했습니다.
+          </div>
+        </div>
+        <div class="paper-card-arrow">→</div>
+      </div>
+
       <div class="paper-card fade-in" onclick="showPage('page-kcc')">
         <div class="paper-card-body">
           <div class="paper-card-badges">
@@ -550,6 +567,7 @@ footer {
           정도를 0~100%까지 정량 제어할 수 있는 <strong>Stochastic Physical Fragmentation(SPF) 모델</strong>을
           제안합니다. 이를 통해 그동안 블랙박스에 가려져 있던 physical fragmentation의 성능 영향을 논리적
           fragmentation과 분리하여 독립적으로 분석했습니다.</p>
+          <p style="color:var(--text3); font-size:0.85rem;">※ SPF 모델의 핵심 설계는 <span onclick="showPage('page-kcc2026')" style="cursor:pointer; color:var(--accent2); border-bottom:1px solid rgba(82,82,184,0.3);">KCC 2026</span>에서 독립적으로 먼저 검증되었으며, 본 연구는 여기에 스냅샷 기반 즉시 aging 인프라와 논리/물리 파편화 분리 분석을 결합해 하나의 완전한 프레임워크로 확장한 것입니다.</p>
         </div>
       </div>
       <div class="detail-divider"></div>
@@ -627,6 +645,70 @@ footer {
       </div>
       <div style="margin-top:2rem;" class="anim">
         <a href="pdfs/systor26-paper30.pdf" class="btn btn-primary" target="_blank">Read Full Paper (PDF)</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-kcc2026" class="page">
+  <div class="detail-page">
+    <div class="detail-inner">
+      <div class="detail-badges anim">
+        <span class="paper-badge badge-kcc">KCC 2026</span>
+        <span class="paper-badge badge-award">🎤 Oral Presentation</span>
+      </div>
+      <h1 class="detail-title anim">
+        SSD 물리적 단편화의 정량적 제어 기법
+      </h1>
+      <div class="detail-meta anim">
+        한국정보과학회 KCC 2026 &nbsp;·&nbsp; NVMeVirt &nbsp;·&nbsp; SPF Model &nbsp;·&nbsp; Physical Fragmentation &nbsp;·&nbsp; FTL
+      </div>
+      <div class="detail-divider"></div>
+      <div class="anim">
+        <div class="detail-section-label">Overview</div>
+        <div class="detail-body">
+          <p>현대 고성능 SSD는 다수의 채널과 다이를 활용한 내부 병렬성으로 최고 성능을 달성하지만, I/O 환경에서
+          발생하는 <strong>physical fragmentation</strong>은 이러한 병렬성을 훼손해 치명적인 성능 저하를
+          유발합니다. 기존 연구들은 상용 SSD FTL의 블랙박스 특성 때문에 physical fragmentation을 간접적으로
+          추정하는 데 그쳤습니다.</p>
+          <p>본 연구는 소프트웨어 정의 NVMe 에뮬레이터인 NVMeVirt의 FTL 내부를 직접 제어하여, physical
+          fragmentation을 정량적으로 유도하고 분석할 수 있는 <strong>SPF(Stochastic Physical Fragmentation) 모델</strong>을
+          제안합니다. 충돌 확률(P<sub>degree</sub>), 버스트 길이(L<sub>burst</sub>), 인터리빙 스트림 수(N<sub>streams</sub>)
+          라는 세 가지 직교 파라미터로 단편화의 빈도, 구조적 심각도, 스트림 간 간섭을 각각 독립적으로 제어할 수
+          있도록 설계했습니다.</p>
+          <p style="color:var(--text3); font-size:0.85rem;">※ 이 SPF 모델은 이후 스냅샷 기반 즉시 aging 인프라와 결합되어
+          <span onclick="showPage('page-systor')" style="cursor:pointer; color:var(--accent2); border-bottom:1px solid rgba(82,82,184,0.3);">SYSTOR 논문</span>의
+          핵심 구성요소로 확장되었습니다.</p>
+        </div>
+      </div>
+      <div class="detail-divider"></div>
+      <div class="anim">
+        <div class="detail-section-label">Key Contributions</div>
+        <div class="contrib-grid">
+          <div class="contrib-item">
+            <div class="contrib-label">01 / Control</div>
+            <div class="contrib-title">FTL 내부 직접 제어</div>
+            <div class="contrib-text">physical fragmentation을 0%에서 100%까지 정밀하게 제어하는 메커니즘 제안.</div>
+          </div>
+          <div class="contrib-item">
+            <div class="contrib-label">02 / Analysis</div>
+            <div class="contrib-title">파라미터별 독립적 영향 분석</div>
+            <div class="contrib-text">Pdegree · Lburst · Nstreams 세 파라미터가 각각 빈도 · 구조적 심각도 · 간섭 정도를 독립적으로 결정.</div>
+          </div>
+          <div class="contrib-item">
+            <div class="contrib-label">03 / Validation</div>
+            <div class="contrib-title">단편화-성능 관계 정량 입증</div>
+            <div class="contrib-text">physical fragmentation 수준과 순차 읽기 성능 저하 사이의 관계를 실험적으로 검증.</div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-divider"></div>
+      <div class="anim">
+        <div class="detail-section-label">Details</div>
+        <div class="detail-placeholder">
+          ✏️ 카메라 레디(camera-ready) 최종본이 확정되면 실험 수치·그림과 함께 상세 내용을 업데이트할
+          예정입니다.
+        </div>
       </div>
     </div>
   </div>
