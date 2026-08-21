@@ -438,7 +438,7 @@ footer {
       <div class="paper-card fade-in" onclick="showPage('page-systor')">
         <div class="paper-card-body">
           <div class="paper-card-badges">
-            <span class="paper-badge badge-systor">SYSTOR — Reject</span>
+            <span class="paper-badge badge-systor">SYSTOR — reject</span>
           </div>
           <div class="paper-card-title">
             Unboxing the Black Box: Quantitative Analysis of Physical Fragmentation in Modern SSDs
@@ -527,7 +527,7 @@ footer {
           <div class="app-name">스타일기</div>
           <div class="app-tech">AI · Character · OOTD</div>
           <div class="app-desc">그날의 OOTD를 AI로 캐릭터에 입히는 일기 앱.</div>
-          <span class="app-status status-wip">Private Beta</span>
+          <span class="app-status status-done">Released</span>
         </div>
       </div>
     </div>
@@ -641,6 +641,35 @@ footer {
           99.99%가 non-contiguous) NVMe 커맨드가 마치 심각하게 fragmented된 것처럼 처리되고 있었습니다.
           <code>--iomem=mmaphuge</code> 옵션으로 hugepage 기반의 연속 버퍼를 사용하도록 바꿔 이 노이즈를
           제거함으로써(non-contiguous 비율 0.003%로 감소) 이후의 모든 측정을 신뢰성 있게 재현할 수 있었습니다.</p>
+
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">6. Reject 이후: 리뷰어 피드백 대응</h3>
+          <p>1차 제출은 reject되었고, 리뷰어 피드백을 바탕으로 <strong>기존 device-aging 도구와의 차별점</strong>,
+          <strong>실사용 use case 검증</strong>, <strong>SPF 모델의 정당성 보강</strong> 세 방향으로 논문을
+          보완하고 있습니다.</p>
+
+          <p><strong>sprandom과의 차별점 — device-level vs. filesystem-level aging.</strong> SSD aging은
+          크게 두 층위로 나뉩니다: 디바이스가 마모되며 OP(Over-Provisioning) 분포가 달라지는 상태를 재현하는
+          <strong>device-level aging</strong>과, 파일시스템 위에서 파일 생성·삭제가 반복되며 발생하는
+          <strong>filesystem-level aging</strong>입니다. 리뷰어는 device-level aging 도구인 sprandom이
+          7일 만에 aged 상태를 만드는데, 저희가 13일을 들이는 것은 과하지 않냐고 지적했습니다. 하지만 sprandom은
+          디바이스 자체를 마모시키는 방식이라 aging이 끝난 뒤 그 위에 파일시스템을 새로 얹을 수 없다는 근본적인
+          한계가 있습니다. 반면 저희 연구가 목표로 하는 것은 <strong>파일시스템이 이미 올라간 상태에서의
+          filesystem-level aging을 단시간에 재현</strong>하는 것이므로, 두 방법은 해결하는 문제 자체가
+          다릅니다. 이 차이를 논문에 보강하려고 합니다.</p>
+
+          <p><strong>Use Case — e4defrag를 통한 physical fragmentation 검증.</strong> e4defrag는 본래
+          extents(논리적 fragmentation)를 정리하기 위한 파일시스템 defragmentation 도구지만, 그 과정에서
+          데이터를 스토리지에 다시 써 내려간다는 점에 주목했습니다. 이 재작성 과정에서 physical fragmentation도
+          함께 개선되어 성능 향상에 기여하는 것은 아닌지 가설을 세우고 검증했습니다. 실험 결과, e4defrag는
+          physical fragmentation을 거의 완전히 해소했으며, 이는 e4defrag 전체 성능 개선분의 <strong>절반
+          이상을 physical fragmentation 해소가 차지</strong>한다는 것을 의미했습니다. 다만 저희 실험에서는
+          과도한 aging으로 인해 extents가 수천 개로 쪼개져 e4defrag 점수가 82점까지 떨어진 극단적인 조건이었고,
+          이 조건에서 physical fragmentation 해소가 차지하는 기여도는 약 절반 수준이었습니다. extents 분절이
+          덜 심한 조건이라면 physical fragmentation 해소의 기여도는 더 커질 것으로 예상하고 있습니다.</p>
+
+          <p><strong>SPF 모델의 정당성 보강 (진행 중).</strong> 위 두 방향에 더해, SPF 모델이 실제 상용
+          SSD의 physical fragmentation 양상을 얼마나 잘 대변하는지에 대한 정당성 논증을 현재 추가로
+          준비하고 있습니다.</p>
         </div>
       </div>
       <div style="margin-top:2rem;" class="anim">
@@ -1092,28 +1121,139 @@ footer {
   <div class="detail-page">
     <div class="detail-inner">
       <div class="anim" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
-        <div class="app-icon" style="background:var(--accent-light);width:52px;height:52px;border-radius:12px;font-size:24px;flex-shrink:0;">📖</div>
+        <div class="app-icon" style="background:var(--accent-light);width:52px;height:52px;border-radius:12px;overflow:hidden;flex-shrink:0;">
+          <img src="images/app_icon.png" alt="스타일기 아이콘" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
         <div>
-          <h1 class="detail-title" style="font-size:1.6rem;margin-bottom:0.2rem;">AI OOTD 일기 앱</h1>
-          <div class="detail-meta" style="margin-bottom:0;">AI · Character · OOTD · Generative</div>
+          <h1 class="detail-title" style="font-size:1.6rem;margin-bottom:0.2rem;">스타일기 — AI OOTD 일기 앱</h1>
+          <div class="detail-meta" style="margin-bottom:0;">AI · Character · OOTD · Generative · ComfyUI · Qwen</div>
         </div>
       </div>
-      <span class="app-status status-wip anim">Private Beta</span>
+      <span class="app-status status-done anim">Released</span>
+
       <div class="detail-divider"></div>
+
       <div class="anim">
         <div class="detail-section-label">Overview</div>
         <div class="detail-body">
-          <p>그날의 OOTD를 AI로 개인 캐릭터에 입히는 기술이 핵심인 일기 앱입니다.</p>
-          <p>옷차림 이미지를 분석해 캐릭터에 반영하는 generative AI 파이프라인이 내장되어 있으며, 현재 비공개 테스트 중입니다.</p>
+          <p>그날의 OOTD(Outfit Of The Day)를 나만의 캐릭터(아바타)에게 입혀주는 컨셉의 다이어리 앱으로,
+          Google Play에 정식 출시되었습니다. 저는 이 프로젝트에서 두 가지 역할을 맡았습니다: (1) 사용자가
+          업로드한 인물 사진에서 <strong>의상을 추출해 캐릭터에 합성</strong>하는 generative AI 파이프라인
+          제작, (2) 앱을 소개하는 <strong>홍보 영상 제작</strong>(현재 진행 중)입니다.</p>
         </div>
       </div>
+
       <div class="detail-divider"></div>
+
+      <div class="anim">
+        <div class="detail-section-label">Key Contributions</div>
+        <div class="contrib-grid">
+          <div class="contrib-item">
+            <div class="contrib-label">01 / Pipeline</div>
+            <div class="contrib-title">의상 추출 · 캐릭터 합성 AI</div>
+            <div class="contrib-text">Qwen 이미지 생성 모델과 ComfyUI 워크플로우로 인물 사진 속 의상을 캐릭터에 입히는 파이프라인 구축.</div>
+          </div>
+          <div class="contrib-item">
+            <div class="contrib-label">02 / Video</div>
+            <div class="contrib-title">체크포인트 기반 홍보 영상</div>
+            <div class="contrib-text">영상의 주요 순간을 이미지로 먼저 생성하고, 이를 연결해 영상화하는 방식으로 제작 중.</div>
+          </div>
+          <div class="contrib-item">
+            <div class="contrib-label">03 / Insight</div>
+            <div class="contrib-title">프롬프트 엔지니어링 학습</div>
+            <div class="contrib-text">모호한 지시에서 시선·동작·배경·카메라·조명까지 명시하는 상세 프롬프트로 발전.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-divider"></div>
+
       <div class="anim">
         <div class="detail-section-label">Details</div>
-        <div class="detail-placeholder">
-          ✏️ 이 영역은 직접 내용을 채워주세요.<br>
-          사용 기술 스택, AI 파이프라인 설명, 스크린샷 등을 자유롭게 추가하세요.
+        <div class="detail-body">
+          <h3>1. 의상 추출 & 캐릭터 합성 파이프라인 (Qwen + ComfyUI)</h3>
+          <p>사용자가 업로드한 사진 속 인물의 옷차림을 추출해 개인 캐릭터(아바타)에게 그대로 입혀주는 기능을
+          담당했습니다. 이미지 생성 모델로는 <strong>Qwen</strong>을 사용했고, 추출 → 합성으로 이어지는
+          작업을 하나의 파이프라인으로 묶기 위해 <strong>ComfyUI</strong>로 워크플로우를 직접 설계·구축했습니다.</p>
+
+          <h3>2. 홍보 영상 제작 — Checkpoint 방식과 프롬프트 엔지니어링</h3>
+          <p>두 번째로 맡은 홍보 영상은, 영상 전체를 한 번에 생성하는 대신 <strong>주요 장면(checkpoint)을
+          이미지로 먼저 생성한 뒤, 그 이미지들을 이어 붙여 영상으로 완성</strong>하는 방식으로 제작하고
+          있습니다. 이 과정에서 인프런 강의를 들으며 깨달은 가장 큰 교훈은, AI에게 "그냥 만들어줘",
+          "영상 만들어줘" 식으로 모호하게 지시해서는 원하는 결과물이 나오지 않는다는 것이었습니다.</p>
+          <p>결과적으로 캐릭터의 의상·표정은 물론 <strong>눈이 향하는 방향, 몸이 어떤 동작을 취하고 있는지,
+          배경의 디테일, 심지어 카메라 무빙과 조명까지</strong> 구체적으로 명시해야 의도한 이미지가 나온다는
+          것을 체득했습니다. 예를 들어 아래는 실제로 작성했던 프롬프트의 일부 발췌입니다 — 캐릭터 외형,
+          표정, 시선 방향, 몸의 방향, 배경, 카메라, 조명, 무드를 각각 별도 섹션으로 분리해 지정합니다.</p>
+          <pre style="background:#fdf1e6; border:1px solid #f0dcc4; border-radius:8px; padding:1rem 1.2rem; font-family:var(--mono); font-size:11.5px; line-height:1.7; color:#5c4a37; overflow-x:auto; white-space:pre-wrap; margin:1.2rem 0;">**Character**
+Cute fluffy light orange-cream kitten character wearing a pastel pink
+cardigan over a soft pink dress...
+
+**Eye direction**
+똥냥이 is clearly looking downward into the open-top stingray tank.
+Her pupils should be positioned toward the lower portion of her eyes...
+Important: She must not look at the camera, straight ahead, or upward.
+
+**Camera**
+Three-quarter side close-up from the aquarium side, approximately at
+her eye level, observing her as she naturally looks downward...
+
+**Lighting**
+Soft blue aquarium light reflects gently across her fur. Subtle
+shimmering caustic patterns create delicate highlights...
+
+**Style**
+Cinematic animated film, ultra detailed, high-quality 3D animation,
+volumetric lighting, shallow depth of field, 9:16.</pre>
+          <p>즉 "이전에는 이런 사진이었다면, 이런 상세 지시를 거쳐 결과적으로는 이런 사진이 만들어졌다"는
+          것을 실제 결과물로 비교해보면 아래와 같습니다.</p>
+
+          <div class="detail-image-container" style="margin: 25px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+            <figure style="margin: 0; text-align: center; flex: 1; min-width: 220px;">
+              <img src="images/ootd_after.png" alt="After: 상세 프롬프트 적용 결과" style="max-width: 100%; border-radius: 8px; border: 1px solid #eaeaea; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+              <figcaption style="margin-top: 12px; font-size: 0.9em; color: #666; font-weight: 500;">After — 캐릭터·시선·동작·배경·카메라·조명까지 명시한 상세 프롬프트 결과</figcaption>
+            </figure>
+            <figure style="margin: 0; text-align: center; flex: 1; min-width: 220px;">
+              <img src="images/ootd_before.png" alt="Before: 단순 프롬프트 결과" style="max-width: 100%; border-radius: 8px; border: 1px solid #eaeaea; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+              <figcaption style="margin-top: 12px; font-size: 0.9em; color: #666; font-weight: 500;">Before — "만들어줘" 수준의 단순 지시 결과</figcaption>
+            </figure>
+          </div>
+
+          <p>AI를 제대로 활용하려면 결과물에 대한 이해와 공부가 반드시 필요하다는 것을 이 과정에서
+          깨달았습니다.</p>
+
+          <h3>3. AI 코드 도구(Antigravity)를 써보며 얻은 인사이트</h3>
+          <p>코드 측면에서는 Gemini 기반 코드 도구인 <strong>Antigravity</strong>를 사용해 보았습니다.
+          기능 구현 자체는 확실히 잘 처리해 주었고, 실제로 프로젝트뿐 아니라 개인 Linux 코드에도 적용해
+          보며 이를 확인했습니다. 다만 <strong>기능 구현이 잘 된다는 것과 성능이 잘 나온다는 것은 별개의
+          문제</strong>였고, 결국 유지보수를 위해서는 사람이 코드를 직접 분석해야 한다는 결론에 도달했습니다.</p>
+          <p>AI에게 유지보수까지 맡겨볼 수도 있지만, 그 과정에서 불필요한 코드나 이미 존재하는 코드와
+          겹치는 부분을 다시 작성하는 경우가 나타났습니다. 분석 없이 AI에게 전부 맡기면, 나중에 버그가
+          발생했을 때 <strong>정작 어디서 문제가 생겼는지 사용자가 파악하지 못하는 상황</strong>으로 이어졌습니다.</p>
+          <p>이와 관련해 <a href="https://news.hada.io/topic?id=32365" target="_blank" style="color:var(--accent2);">한 뉴스</a>에서는
+          Claude가 기본 모드를 auto 모드로 바꾸고 대신 코드를 더 열심히 분석하도록 한다고 밝혔는데, 저는
+          이 방향에 다소 회의적입니다. AI 코드 도구의 주 사용자는 결국 코더·개발자이고, 이들은 AI가 작성한
+          코드를 직접 보고 분석하며 이해하는 과정을 거쳐야 합니다. 그런데 그 과정이 생략되면, AI를 활용하는
+          개발자일수록 오히려 이해 없는 코드를 작성하게 될 가능성이 크다고 봅니다. 특히 변경점을 조금씩
+          보여주면 개발자가 이를 잘 따라갈 수 있지만, 한 번에 많은 변경점을 쏟아내면 이해하는 데 걸리는
+          시간이 오히려 더 길어진다는 것도 체감했습니다.</p>
+
+          <h3>4. 결론</h3>
+          <p>이 프로젝트를 통해 AI를 제대로 활용하려면 막연히 맡기는 것이 아니라 <strong>충분한 학습과
+          이해가 선행되어야 한다</strong>는 것을 배웠습니다. 이미지·영상 생성에서는 상세하고 구조화된
+          프롬프트가 결과물의 품질을 좌우했고, 코드 생성에서는 기능 구현력과 유지보수 가능성이 별개의
+          문제라는 것을 확인했습니다. 결론적으로 저는 AI 코드 생성 도구를 <strong>개발자를 완전히 대체하는
+          도구가 아니라, 개발자의 이해를 바탕으로 하는 보조 도구</strong>로 활용하는 것이 맞다고 생각합니다.</p>
         </div>
+      </div>
+
+      <div class="detail-divider"></div>
+
+      <div class="detail-footer anim" style="margin-top: 40px; display: flex; gap: 15px; justify-content: center;">
+        <a href="https://play.google.com/store/apps/details?id=com.mewNmung.style_diary&pcampaignid=web_share" target="_blank" style="display: inline-flex; align-items: center; padding: 12px 24px; background-color: #01875f; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; transition: opacity 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <svg height="20" viewBox="0 0 24 24" width="20" style="fill: #fff; margin-right: 8px;"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" /></svg>
+          Google Play 스토어 보기
+        </a>
       </div>
     </div>
   </div>
