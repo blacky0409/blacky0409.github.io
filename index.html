@@ -704,11 +704,54 @@ footer {
       </div>
       <div class="detail-divider"></div>
       <div class="anim">
-        <div class="detail-section-label">Details</div>
-        <div class="detail-placeholder">
-          ✏️ 카메라 레디(camera-ready) 최종본이 확정되면 실험 수치·그림과 함께 상세 내용을 업데이트할
-          예정입니다.
+        <div class="detail-section-label">Key Results</div>
+        <div class="result-chips">
+          <span class="chip">P<sub>degree</sub> 0 → 100: <strong>지속적 대역폭 감소</strong></span>
+          <span class="chip">L<sub>burst</sub> 1 → 64: <strong>다이 충돌 심각도 증가</strong></span>
+          <span class="chip">N<sub>streams</sub>: <strong>완만한 2차 효과</strong></span>
         </div>
+      </div>
+      <div class="detail-divider"></div>
+      <div class="anim">
+        <div class="detail-section-label">Details</div>
+        <div class="detail-body">
+          <h3 style="font-size:1.1rem; margin-bottom:0.8rem; color:var(--text); font-weight:500;">1. 실험 환경</h3>
+          <p>Linux 커널 5.10.0 위에 NVMeVirt를 기반으로 SPF 모델을 구현했습니다. Intel Xeon Gold 5215
+          (2.50GHz, 10코어) 2소켓과 379GB DRAM으로 구성된 서버에서, 8채널 × 2웨이(다이 16개), 32KiB
+          페이지 크기의 128GiB 가상 SSD를 에뮬레이션했습니다. 성능 측정에는 fio를 사용했으며, O_DIRECT
+          플래그와 페이지 캐시 플러시로 OS 캐시 영향을 제거하고 커널 수준 readahead를 비활성화했습니다.
+          또한 hugepage 기반의 연속 버퍼를 할당해 호스트 측 I/O 버퍼 단편화 자체를 원천 차단했습니다
+          (iodepth=32).</p>
+ 
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">2. Pdegree — 성능 저하를 좌우하는 지배적 변수</h3>
+          <p>Pdegree를 0에서 100까지 증가시키자 대역폭은 지속적으로 감소했으며, 이 하락 추세는
+          Lburst·Nstreams 설정과 무관하게 모든 조건에서 일관되게 관찰되었습니다. Pdegree가 낮은 구간에서는
+          데이터가 여러 다이에 비교적 균등하게 분배되어 내부 병렬성이 유지되지만, Pdegree가 높은 구간에서는
+          특정 다이로 I/O가 집중되면서 대역폭 급락과 지연시간 급증이 함께 나타났습니다. 세 파라미터 가운데
+          성능 저하 추세를 가장 크게 좌우하는 변수로 확인됐습니다.</p>
+ 
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">3. Lburst — 충돌의 구조적 심각도</h3>
+          <p>Lburst를 1에서 64로 늘리면 다이 충돌의 지속 시간이 길어지며 대역폭이 추가로 감소했습니다.
+          다만 이미 단편화가 심한 조건(Pdegree=90)에서는 Lburst 증가에 따른 하락 폭이 상대적으로 작았는데,
+          이는 데이터가 이미 특정 다이에 쏠려 있어 긴 충돌이 사실상 기본 상태로 자리 잡았기 때문입니다.
+          즉 Lburst는 Pdegree가 만들어낸 충돌 이벤트의 '무게'를 독립적으로 키우는 역할을 합니다.</p>
+ 
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">4. Nstreams — 동시성 간섭을 재현하는 보조 변수</h3>
+          <p>동시 다중 스트림 기록을 모사하는 Nstreams는 값이 커질수록 스트림 간 데이터가 FTL 수준에서
+          더 깊게 뒤섞여 내부 병렬성을 약화시켰습니다. 다만 성능 저하 폭은 Pdegree·Lburst 대비 완만해,
+          극단적인 병목을 직접 유발하기보다는 실제 워크로드의 동시성 간섭을 현실적으로 재현하는 보조
+          파라미터로 기능함을 확인했습니다.</p>
+ 
+          <h3 style="font-size:1.1rem; margin:1.8rem 0 0.8rem; color:var(--text); font-weight:500;">5. 결론</h3>
+          <p>세 파라미터(Pdegree·Lburst·Nstreams)를 통해 physical fragmentation을 0~100% 범위에서
+          정밀하게 유도할 수 있었고, 단편화 수준이 높아질수록 내부 병렬성 저하와 순차 읽기 성능 감소가
+          유의미하게 나타남을 실험적으로 입증했습니다. 기존에는 관측이 불가능했던 physical fragmentation을
+          재현 가능한 형태로 통제했다는 점에서, SSD 벤치마크 설계·저장장치 성능 평가·단편화 완화 기법
+          개발에 활용될 수 있는 기반을 마련했습니다.</p>
+        </div>
+      </div>
+      <div style="margin-top:2rem;" class="anim">
+        <a href="pdfs/kcc2026.pdf" class="btn btn-primary" target="_blank">Read Full Paper (PDF)</a>
       </div>
     </div>
   </div>
